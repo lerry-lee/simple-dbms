@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<students> 
+  <student> 
+    <id>1</id>  
+    <name>xiaoming</name>  
+    <class>1</class> 
+  </student>  
+  <student> 
+    <id>2</id>  
+    <name>xiaohong</name>  
+    <class>2</class> 
+  </student> 
+</students>

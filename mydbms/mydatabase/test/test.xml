@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RESULT> 
+  <value> 
+    <NO>A1234</NO>  
+    <ADDR>sichuan province</ADDR> 
+  </value>  
+  <value> 
+    <NO>B1234</NO>  
+    <ADDR>SHANDONG PROVINCE</ADDR> 
+  </value>  
+  <book/>  
+  <test> 
+    <id>003</id>  
+    <name>lerry</name>  
+    <id>004</id>  
+    <name>xiaoming</name> 
+  </test>  
+  <test> 
+    <school>swu</school>  
+    <city>chongqing</city> 
+  </test>  
+  <test>
+    <id>004</id>
+    <name>xiaoming</name>
+  </test>
+</RESULT>
