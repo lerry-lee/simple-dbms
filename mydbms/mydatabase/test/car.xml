@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<cars> 
-  <car> 
-    <id type="int"/>  
-    <name type="string"/>  
-    <year type="int"/> 
-  </car> 
-</cars>
