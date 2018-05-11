@@ -3,222 +3,209 @@ package function;
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 
+import javax.smartcardio.ATR;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class SelectFromTable {
 
-    //select * from tableName where property=value
-    public static void selectAllFromTb(String dbName,String tableName,List<String> tmp1) throws DocumentException {
-        //if database illegal
-        if (!IsDatabase.idDatabase()) {
+    //select * from 表名
+    public static void selectFromTb(String dbName, String tbName) throws DocumentException {
+        //数据库是否合法
+        if (IsLegal.isDatabaseEmpty()) {
             return;
         }
-        //if table exist
-        File file = new File("./mydatabase/" + dbName + "/" + tableName + ".xml");
+        //若表存在，则得到表的最后一个文件下标
+        String file_num = IsLegal.isTable(tbName);
 
-        if (!file.exists()) {
-            System.out.println(tableName + " does not exist");
+        for (int j = Integer.parseInt(file_num); j >= 0; j--) {
+            String num=""+j;
+            File file = new File("./mydatabase/" + dbName + "/" + tbName + "/"+tbName+num+".xml");
+            //解析xml
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(file);
+            //获得根节点
+            Element rootElement = document.getRootElement();
+            //获得节点名为tbName的节点List
+            List<Node> nodes = rootElement.selectNodes(tbName);
+
+            for (Node node : nodes) {
+                Element elementNode = (Element) node;
+                List<Attribute> list=elementNode.attributes();
+                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                    Attribute attribute=(Attribute)i.next();
+                    System.out.println(attribute.getName() + " " + attribute.getText());
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    //select * from 表名 where 列名称=列值
+    public static void selectAllFromTb(String dbName,String tbName,List<String> tmp1) throws DocumentException {
+        //数据库是否合法
+        if (IsLegal.isDatabaseEmpty()) {
             return;
         }
-        //condition string array
+        //若表存在，则得到表的最后一个文件下标
+        String file_num=IsLegal.isTable(tbName);
+        //标记是否找到记录
+        boolean condition_find = false;
+        //存where条件的condition数组
         String[] condition = new String[2];
         condition = tmp1.get(1).split("=");
-//        System.out.println(tmp1.get(0)+" "+tmp1.get(1));
-//        System.out.println(condition[0]+" "+condition[1]);
 
-        SAXReader reader = new SAXReader();
-        //read xml to document
-        Document document = reader.read(file);
-        //get xml root node
-        Element rootElement = document.getRootElement();
-        //set an element to traverse
-        Element element;
-//        Element fooElement=rootElement.element(tableName);
+        for(int j = Integer.parseInt(file_num); j >= 0; j--) {
+            boolean find=false;
+            String num=""+j;
+            File file = new File("./mydatabase/" + dbName + "/" + tbName + "/"+tbName+num+".xml");
 
-        //traverse all node
-        //Element targert=fooElement.element(condition[0]);
-        boolean condition_find = false;
-        List<Node> nodes = rootElement.selectNodes(tableName);
+            //解析xml
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(file);
+            Element rootElement = document.getRootElement();
 
-        for (Node node : nodes) {
-            boolean find1=false;
-            Element node1 = (Element) node;
-            for (Iterator i = node1.elementIterator(); i.hasNext(); ) {
-                element = (Element) i.next();
+            List<Node> nodes = rootElement.selectNodes(tbName);
 
-                if (element.getName().equals(condition[0]) && element.getText().equals(condition[1])) {
-                    find1 = true;
-                    condition_find=true;
-                    break;
+            for (Node node : nodes) {
+                find=false;
+                Element node1 = (Element) node;
+                List<Attribute> list=node1.attributes();
+                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                    Attribute attribute=(Attribute)i.next();
+                    if (attribute.getName().equals(condition[0]) && attribute.getText().equals(condition[1])) {
+                        find = true;
+                        condition_find=true;
+                        break;
+                    }
                 }
-            }
-            if (find1) {
-                for (Iterator i = node1.elementIterator(); i.hasNext(); ) {
-                    element = (Element) i.next();
-                    System.out.println(element.getName() + " " + element.getText());
+                if (condition_find&&find) {
+                    for (Iterator i = list.iterator(); i.hasNext(); ) {
+                        Attribute attribute = (Attribute) i.next();
+                        System.out.println(attribute.getName() + " " + attribute.getText());
+                    }
+                    System.out.println();
                 }
-            }
 
+            }
         }
 
         if(!condition_find)
         {
-            System.out.println("not find");
+            System.out.println("未找到该记录");
             return;
         }
 
     }
-    //select property1,property2 from tableName
-    public static void selectFromTb(String dbName, String tableName, List<String> tmp1) throws DocumentException {
-        //if database illegal
-        if (!IsDatabase.idDatabase()) {
+    //select 列名称1，列名称2 from 表名
+    public static void selectFromTb(String dbName, String tbName, List<String> tmp1) throws DocumentException {
+        //数据库是否合法
+        if (IsLegal.isDatabaseEmpty()) {
             return;
         }
-        //if table exist
-        File file = new File("./mydatabase/" + dbName + "/" + tableName + ".xml");
-
-        if (!file.exists()) {
-            System.out.println(tableName + " does not exist");
-            return;
-        }
-        //condition string array
-        String[] condition = new String[0];
-        //System.out.println(condition[0]+" "+condition[1]);
-
-        SAXReader reader = new SAXReader();
-        //read xml to document
-        Document document = reader.read(file);
-        //get xml root node
-        Element rootElement = document.getRootElement();
-        //set an element to traverse
-        Element element;
+        //若表存在，则得到表的最后一个文件下标
+        String file_num=IsLegal.isTable(tbName);
+        //标记是否找到列
         boolean find2 = false;
-        //traverse all node
-        List<Node> nodes = rootElement.selectNodes(tableName);
 
-        for (Node node : nodes) {
-            Element node1 = (Element) node;
-                for (Iterator i = node1.elementIterator(); i.hasNext(); ) {
-                    element = (Element) i.next();
-                    for (int j = 0; j < tmp1.size(); j++) {
-                        if (element.getName().equals(tmp1.get(j))) {
+        for(int j = Integer.parseInt(file_num); j >= 0; j--) {
+            String num = "" + j;
+            File file = new File("./mydatabase/" + dbName + "/" + tbName + "/" + tbName + num + ".xml");
+            //解析XML
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(file);
+            Element rootElement = document.getRootElement();
+
+            //遍历所有节点
+            List<Node> nodes = rootElement.selectNodes(tbName);
+
+            for (Node node : nodes) {
+                Element node1 = (Element) node;
+                List<Attribute> list=node1.attributes();
+                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                    Attribute attribute = (Attribute) i.next();
+                    for (int k = 0; k < tmp1.size(); k++) {
+                        if (attribute.getName().equals(tmp1.get(k))) {
                             find2 = true;
-                            System.out.println(element.getName() + " " + element.getText());
+                            System.out.println(attribute.getName() + " " + attribute.getText());
                         }
                     }
                 }
             }
+        }
             if (!find2) {
-                System.out.println("not find");
+                System.out.println("未找到列");
                 return;
             }
         }
 
-    //select property1,property2 from tableName where propertyI=valueI
-    public static void selectFromTb(String dbName, String tableName, List<String> tmp1, List<String> tmp2) throws DocumentException {
+    //select 列名称1，列名称2 from tbName where 列名称=列值
+    public static void selectFromTb(String dbName, String tbName, List<String> tmp1, List<String> tmp2) throws DocumentException {
         //if database illegal
-        if (!IsDatabase.idDatabase()) {
+        if (IsLegal.isDatabaseEmpty()) {
             return;
         }
-        //if table exist
-        File file = new File("./mydatabase/" + dbName + "/" + tableName + ".xml");
-
-        if(!file.exists()){
-            System.out.println(tableName+" does not exist");
-            return;
-        }
-        //condition string array
+        //若表存在，则得到表的最后一个文件下标
+        String file_num=IsLegal.isTable(tbName);
+        //存where条件的condition数组
         String[] condition = new String[0];
         condition = tmp2.get(1).split("=");
-        //System.out.println(condition[0]+" "+condition[1]);
-
-        SAXReader reader = new SAXReader();
-        //read xml to document
-        Document document = reader.read(file);
-        //get xml root node
-        Element rootElement = document.getRootElement();
-        //set an element to traverse
-        Element element;
-//        Element fooElement=rootElement.element(tableName);
-
-        //traverse all node
-        //Element targert=fooElement.element(condition[0]);
         boolean condition_find = false;
-        boolean element_find=false;
-        List<Node> nodes = rootElement.selectNodes(tableName);
+        boolean element_find = false;
+        boolean find1 = false;
+        boolean find2 = false;
 
-        for (Node node : nodes) {
-            boolean find1=false;
-            boolean find2=false;
-            Element node1 = (Element) node;
-            for (Iterator i = node1.elementIterator(); i.hasNext(); ) {
-                element = (Element) i.next();
-                //System.out.println(element.getName()+" "+element.getText());
-                if (element.getName().equals(condition[0]) && element.getText().equals(condition[1])) {
+        for(int j = Integer.parseInt(file_num); j >= 0; j--) {
+            String num = "" + j;
+            File file = new File("./mydatabase/" + dbName + "/" + tbName + "/" + tbName + num + ".xml");
+            //解析XML
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(file);
+            Element rootElement = document.getRootElement();
 
-                    find1 = true;
-                    condition_find=true;
-                    break;
+            condition_find = false;
+            element_find = false;
+            List<Node> nodes = rootElement.selectNodes(tbName);
+
+            for (Node node : nodes) {
+                find1 = false;
+                find2 = false;
+                Element node1 = (Element) node;
+                List<Attribute> list=node1.attributes();
+                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                    Attribute attribute = (Attribute) i.next();
+                    if (attribute.getName().equals(condition[0]) && attribute.getText().equals(condition[1])) {
+                        find1 = true;
+                        condition_find = true;
+                        break;
+                    }
                 }
-            }
-            if (find1&&!find2) {
-                for (Iterator i = node1.elementIterator(); i.hasNext(); ) {
-                    element = (Element) i.next();
-                    for (int j = 0; j < tmp1.size(); j++) {
-                        if (element.getName().equals(tmp1.get(j))) {
-                            find2=true;
-                            element_find=true;
-                            System.out.println(element.getName() + " " + element.getText());
+                if (find1 && !find2) {
+                    for (Iterator i = list.iterator(); i.hasNext(); ) {
+                        Attribute attribute = (Attribute) i.next();
+                        for (int k = 0; k < tmp1.size(); k++) {
+                            if (attribute.getName().equals(tmp1.get(k))) {
+                                find2 = true;
+                                element_find = true;
+                                System.out.println(attribute.getName() + " " + attribute.getText());
+                            }
                         }
                     }
                 }
-            }
 
+            }
         }
         if (!element_find) {
-            System.out.println("condition not find");
+            System.out.println("未找到记录");
             return;
 
         }
         else if(condition_find&&!element_find)
         {
-            System.out.println("property columns not exist");
+            System.out.println("未找到列");
         }
     }
 
-    //select * from tableName
-    public static void selectFromTb(String dbName, String tableName) throws DocumentException {
-//        if database illegal
-        if (!IsDatabase.idDatabase()) {
-            return;
-        }
-        //if table exist
-        File file = new File("./mydatabase/" + dbName + "/" + tableName + ".xml");
 
-        if(!file.exists()){
-            System.out.println(tableName+" does not exist");
-            return;
-        }
-
-        SAXReader reader = new SAXReader();
-        //read xml to document
-        Document document = reader.read(file);
-        //get xml root node
-        Element rootElement = document.getRootElement();
-        //get nodes name=tableName
-        List<Node> nodes=rootElement.selectNodes(tableName);
-
-        for(Node node:nodes){
-            Element elementNode=(Element)node;
-            Element element;
-            for(Iterator i=elementNode.elementIterator();i.hasNext();){
-                element=(Element)i.next();
-                System.out.println(element.getName()+" "+element.getText());
-            }
-            System.out.println();
-        }
-    }
 }

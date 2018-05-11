@@ -11,58 +11,59 @@ import java.util.List;
 
 public class CreateTable extends UseDatabase {
 
-
+    //create table 表名(列名称1 数据类型1，列名称2 数据类型2)
     public static void createTb(String dbName, String tbName, List<String> tmp) throws IOException {
 
-        //if database illegal
-        if(!IsDatabase.idDatabase()){
+        //判断数据库是否合法
+        if(IsLegal.isDatabaseEmpty()){
             return;
         }
-        //create table
-        File table=new File("./mydatabase/"+dbName+"/"+tbName+".xml");
-        if(!table.exists()){
-            table.createNewFile();
-            System.out.println("table "+tbName+" create successfully");
+        //创建表名文件夹，逻辑层表示一张表
+        File tableFile=new File("./mydatabase/"+dbName+"/"+tbName+"");
+        if(!tableFile.exists()){
+            tableFile.mkdir();
         }
         else{
-            System.out.println("table "+tbName+" is already exist");
+            System.out.println(tbName+"表已经存在");
+            return;
         }
-        //create document object
+        //一张表在物理层表示为多个XML文件，创建表配置文件，存储表的列名称、数据类型、文件名
+        File table=new File("./mydatabase/"+dbName+"/"+tbName+"/"+tbName+"-config.xml");
         Document document = DocumentHelper.createDocument();
-        //add labels
         Element rootElem = document.addElement(tbName+"s");
-        Element column=rootElem.addElement(tbName);
-
-
-        if(tmp!=null) {
-
-            for (int i = 0; i < tmp.size(); i++) {
-
+        //表配置文件的根节点的属性值为列名称=数据类型
+        for (int i = 0; i < tmp.size(); i++) {
                 String[] list=tmp.get(i).split(" ");
-                Element leafElem = column.addElement(list[0]);
-                for(int j=1;j<list.length;j++) {
-                    leafElem.addAttribute("type",list[j]);
-                }
-            }
-//        /*
-////        Element stuElem=rootElem.addElement("student");
-////        stuElem.addElement("name").addText("Lerry");
-////        stuElem.addElement("sex").addText("male");
-////        //add attribute
-////        stuElem.addAttribute("id","001");
-////        //stuElem.addAttribute("sex","male");
-////        */
+                rootElem.addAttribute(list[0],list[1]);
         }
-        //specify file output location
-        FileOutputStream outputStream=new FileOutputStream(table);
+        rootElem.addElement(tbName).setText("000");
+
+        //记录文件名信息并创建第一个文件
+        File first_file=new File("./mydatabase/"+dbName+"/"+tbName+"/"+tbName+"000.xml");
+        Document first_document=DocumentHelper.createDocument();
+        first_document.addElement(tbName+"s");
+        //确定文件输出位置
+        FileOutputStream outputStream=new FileOutputStream(first_file);
         OutputFormat outputFormat=OutputFormat.createPrettyPrint();
         outputFormat.setEncoding("UTF-8");
-        //create write object
+        //创建写入对象，写入document对象
         XMLWriter xmlWriter=new XMLWriter(outputStream,outputFormat);
-        //write document object
-        xmlWriter.write(document);
-        //close the stream
+        xmlWriter.write(first_document);
+        //关闭流
         xmlWriter.close();
+
+
+        //创建配置文件
+        //确定文件输出位置
+        FileOutputStream outputStream1=new FileOutputStream(table);
+        OutputFormat outputFormat1=OutputFormat.createPrettyPrint();
+        outputFormat.setEncoding("UTF-8");
+        //创建写入对象，写入document对象
+        XMLWriter xmlWriter1=new XMLWriter(outputStream1,outputFormat1);
+        xmlWriter1.write(document);
+        //关闭流
+        xmlWriter1.close();
+        System.out.println(tbName+"表创建成功");
 
     }
 }

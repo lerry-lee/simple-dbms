@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schools> 
+  <school id="01" name="school1" location="location1"/>  
+  <school id="04" name="school4" location="location4"/>  
+  <school id="05" name="school5" location="location5"/>  
+  <school id="06" name="school6" location="location6"/>  
+  <school id="07" name="swu" location="chongqing"/>  
+  <school id="08" name="school8" location="location8"/>  
+  <school id="09" name="school9" location="location9"/>  
+  <school id="10" name="school10" location="location10"/>  
+  <school id="11" name="school11" location="location11"/>  
+  <school id="03" name="school3" location="location3"/> 
+</schools>

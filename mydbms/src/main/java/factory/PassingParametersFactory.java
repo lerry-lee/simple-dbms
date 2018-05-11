@@ -3,7 +3,6 @@ package factory;
 import function.*;
 import org.dom4j.DocumentException;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.util.*;
 
@@ -17,16 +16,15 @@ public class PassingParametersFactory {
 		List<String> ls = new ArrayList<String>();
 		ls = list.get(0);     //等效：ls.addAll(list.get(0));
 //--------------------------------------------------------------------------------------------------------------------------------------
-//	test
 //		for(int i = 0 ; i < list.size();i++)
 //		{
-//			System.out.println("list.get["+i+"]: "+list.get(i));
+//			System.out.println("list.get("+i+"): "+list.get(i));
 //		}
 		String key = ls.get(0);
 
 		if(key.equals("create table"))
 		{
-			System.out.println("3)call method: CreateTable");
+			System.out.println("3)调用方法：创建表");
 
 			List<String> tmp = new ArrayList<String>();//传递参数
 			List<String> tmp1 = new ArrayList<String>();
@@ -57,34 +55,32 @@ public class PassingParametersFactory {
 		}
 		else if(key.equals("show databases"))
 		{
-			System.out.println("3)call method: ShowDatabase");
-            ShowDatabase.showDatabase();
+			System.out.println("3)调用方法：列出所有数据库");
+            ShowDatabases.showDatabase();
 		}
 		else if(key.equals("show tables"))
 		{
-			System.out.println("3)call method: ShowTable");
-			ShowTable.showTable(UseDatabase.dbName);
+			System.out.println("3)调用方法：列出所有表");
+			ShowTables.showTable(UseDatabase.dbName);
 		}
 		else if(key.equals("use database"))
 		{
-			System.out.println("3)call method: UseDatabase");
+			System.out.println("3)调用方法：进入数据库");
 			UseDatabase.dbName=ls.get(1);
 			//if database illegal
-			if(!IsDatabase.idDatabase()){
+			if(!IsLegal.isDatabase()){
 				UseDatabase.dbName=null;
 				return;
 			}
 		}
 		else if(key.equals("create database"))
 		{
-			System.out.println("3)call method: CreateDatabase");
+			System.out.println("3)调用方法：创建数据库");
             CreateDatabase.createDB(ls.get(1));
 		}
 		else if(key.equals("insert into"))
 		{
-			System.out.println("3)call method: InsertIntoTable");
-
-//			Map tmp = new HashMap();//传递参数
+			System.out.println("3)调用方法：插入数据到表");
 
 			List<String> tmp2 = new ArrayList<String>();
 			List<String> tmp1 = new ArrayList<String>();
@@ -124,7 +120,7 @@ public class PassingParametersFactory {
 			String arg="where";
 			if(list.size()>1) {
 				if (list.get(1).get(0).equals(arg)) {
-					System.out.println("3)call method: Select*FromTable(where)");
+					System.out.println("3)调用方法：查询指定记录");
 					String tableName = list.get(0).get(1);
 					List<String> tmp1 = new ArrayList<String>();
 					tmp1 = list.get(1);
@@ -133,15 +129,21 @@ public class PassingParametersFactory {
 				}
 			}
 			else {
-				System.out.println("3)call method: Seclect*FromTable");
+				System.out.println("3)调用方法：查询所有记录");
 				String tableName = list.get(0).get(1);
 				SelectFromTable.selectFromTb(UseDatabase.dbName, tableName);
 			}
 
 		}
+		else if(key.equals("select table")){
+			System.out.println("3)调用方法：从数据库中查询表");
+            String dbName=list.get(1).get(1);
+            String tbName=list.get(0).get(1);
+            SelectFromDatabase.selectFromDB(dbName,tbName);
+		}
 		else if(key.equals("select"))
 		{
-			System.out.println("3)call method: SelectFromTable");
+			System.out.println("3)调用方法：查询记录中的某些列");
 			List<String> tmp1=new ArrayList<String>();
 			List<String> tmp2=new ArrayList<String>();
 			tmp1=list.get(0);
@@ -226,7 +228,7 @@ public class PassingParametersFactory {
 
 		else if(key.equals("update"))
 		{
-			System.out.println("3)call method: UpdateTable");
+			System.out.println("3)调用方法：更新指定记录");
 
 			List<List<String>> tmp = new ArrayList<List<String>>(); //传递参数
 			tmp = getPararmeterList(list);
@@ -248,16 +250,16 @@ public class PassingParametersFactory {
 //---------------------------------------------------------------------------------------------------------------------------------	-------------------
 		}
 		else if(key.equals("delete database")){
-		    System.out.println("3)call method: DeleteDatabase");
+		    System.out.println("3)调用方法：删除数据库");
 		    DeleteDatabase.deleteDB((ls.get(1)));
         }
         else if(key.equals("delete table")){
-            System.out.println("3)call method: DeleteTable");
+            System.out.println("3)调用方法：删除表");
             DeleteTable.deleteTable(UseDatabase.dbName,ls.get(1));
         }
 		else if(key.equals("delete from"))
 		{
-			System.out.println("3)call method: DeleteFromTable");
+			System.out.println("3)调用方法：删除指定记录");
 			//取出每个list中的start部分，只传递后面的参数部分；
 			List<String> tmp1 = new ArrayList<String>();
 			List<String> tmp2 = new ArrayList<String>();

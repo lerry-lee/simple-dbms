@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class DeleteDatabase {
-
+    //delete database 数据库名称
     public static void deleteDB(String dbname) throws IOException {
 
             File file = new File("./mydatabase/" + dbname + "");
@@ -15,9 +15,9 @@ public class DeleteDatabase {
                 System.out.println("database " + dbname + " is not exist");
                 return;
             }
-            //if database has tables
+            //若数据库中有表存在，则提示用户
             if (file.listFiles().length > 0) {
-                System.out.println("There are tables still in the database " + dbname + " ,are you sure that you want to delete it? (Y/N)");
+                System.out.println("数据库" + dbname + "中有表存在，是否继续删除(Y/N)");
 
                 Scanner scanner=new Scanner(System.in);
                 String answer=scanner.next();
@@ -28,15 +28,15 @@ public class DeleteDatabase {
                         files[i].delete();
                     }
                     file.delete();
-                    System.out.println("database " + dbname + " delete successfully");
+                    System.out.println("数据库" + dbname + "删除成功");
                 } else {
                     return;
                 }
             }
-            //if database is empty
+            //若数据库为空，直接删除
             else {
                 file.delete();
-                System.out.println("database " + dbname + " delete successfully");
+                System.out.println("数据库" + dbname + "删除成功");
             }
         }
 

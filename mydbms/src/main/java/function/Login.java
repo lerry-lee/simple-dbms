@@ -4,6 +4,8 @@ import factory.*;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
 import java.io.BufferedReader;
@@ -18,40 +20,45 @@ public class Login {
     public static void main(String[]args) throws IOException, DocumentException {
 
 
-        System.out.println("welcome to my simple dbms.if you want to use it,please login first.");
-        //set a to account login-failed times
-        int a=3;
-        while(a>0) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            //get user id
-            System.out.println("input user id:");
-            String name = bufferedReader.readLine();
-            //get password
-            System.out.println("input password:");
-            String password = bufferedReader.readLine();
+//        System.out.println("欢迎进入My-Simple-Dbms,请先登录");
+//        //声明一个变量a，记录用户输入错误次数，超过3此则退出系统
+//        int a=3;
+//        while(a>0) {
+//            //获得用户输入ID和PASSWORD
+//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+//            System.out.println("请输入用户名：");
+//            String name = bufferedReader.readLine();
+//            System.out.println("请输入密码：");
+//            String password = bufferedReader.readLine();
+//
+//            //验证请求登陆的用户信息
+//            Document document = (Document) new SAXReader().read("./mydatabase/user/user.xml");
+//            org.dom4j.Element node = (org.dom4j.Element) document.selectSingleNode("users/user[@name='" + name + "'and @password='" + password + "']");
+//
+//            if (node != null) {
+//                System.out.println("登录成功");
+//                a=0;
+//            }
+//            else {
+//                System.out.println("用户名或密码错误，请重试");
+//                a--;
+//                if(a==0) {
+//                System.out.println("输入用户名/密码错误3次，系统即将退出");
+//                return;
+//                }
+//            }
+//        }
 
-            //find user info from database
-            Document document = (Document) new SAXReader().read("./mydatabase/user/user.xml");
-            org.dom4j.Element node = (org.dom4j.Element) document.selectSingleNode("users/user[@name='" + name + "'and @password='" + password + "']");
 
-            if (node != null) {
-                System.out.println("login successfully.");
-                a=0;
-            }
-            else {
-                System.out.println("login failed.please try again.");
-                a--;
-                if(a==0) {
-                System.out.println("you have input the wrong id/password three times,dbms will exit.");
-                return;
-                }
-            }
-        }
-
-        System.out.println("please input sql statement:");
+//        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(System.in));
+//        String answer=bufferedReader.readLine();
+//        if(answer.equals("help")){
+//            read_help();
+//        }
         UseDatabase.dbName=null;
         while(true)
         {
+            System.out.println("请输入SQL语句：（您可以输入help以查询SQL语句帮助）");
             @SuppressWarnings("resource")
             Scanner input = new Scanner(System.in);
             String sql = input.nextLine();
@@ -65,6 +72,10 @@ public class Login {
 //             */
 //            //处理分行输入的问题，就是读;号才停止;
             //sql parse
+            if(sql.equals("help")){
+                read_help();
+            }
+
             while(sql.lastIndexOf(";")!=sql.length()-1){
                 sql = sql+" "+input.nextLine();
             }
@@ -75,7 +86,7 @@ public class Login {
 
             sql = sql.substring(0, sql.lastIndexOf(";"));
             sql=""+sql+" ENDOFSQL";
-            System.out.println("1)sql parsing result: "+sql);
+            System.out.println("1)SQL预处理结果: "+sql);
 //
 //            /*
 //             * 结束输入判断
@@ -91,56 +102,34 @@ public class Login {
             }
             else
             {
-//                //System.out.println("准备执行SingleSqlParserFactory.generateParser函数");
-//                /*
-//                 * 分割出sql语句的关键部分，用list-parameter_list存储
-//                 */
-                //match regular expressions
+                //将预处理后的SQL语句匹配SQL正则表达式，返回含有SQL的body信息的List
                 try{
                     parameter_list = SingleSqlParserFactory.generateParser(sql);
                 }
                 catch (Exception e){
-                    e.printStackTrace();
+                    //e.printStackTrace();
 
                 }
-
-//
-////----------------------------------------------------------------------------------------------------------------
-//                //System.out.println("执行结束SingleSqlParserFactory.generateParser函数");
-//                /*
-//                 * 查看解析后的List<List<String>>是否正确
-//                 */
-//
-////				for(int i = 0;i < parameter_list.size();i++)
-////				{
-////					System.out.println(parameter_list.get(i));
-////				}
-////
-////				System.out.println();
-//
-////				List<String> test = new ArrayList<String>();
-////				test = parameter_list.get(2);
-////
-////				for(int i = 0;i < test.size();i++)
-////				{
-////					String r = test.get(i);
-////					System.out.println(r.trim());
-////				}
-////----------------------------------------------------------------------------------------------------------------
-//                /*
-//                 * 根据关键字判断调用底层哪个功能模块
-//                 */
-//                //System.out.println("PassingParametersFactory.dealParameters");
-                //call function method
+                //根据SQL的body部分，调用相应的功能模块
                 try{
                     PassingParametersFactory.dealParameters(parameter_list);
                 }
                 catch(Exception e){
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
 
 
+        }
+    }
+    public static void read_help() throws DocumentException {
+        File file=new File("./help.xml");
+        SAXReader saxReader=new SAXReader();
+        Document document=saxReader.read(file);
+        List<Node> nodes=document.getRootElement().selectNodes("help");
+        for(Node node:nodes){
+            Element element=(Element)node;
+            System.out.println(element.getText());
         }
     }
 }

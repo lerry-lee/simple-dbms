@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schools id="int" name="varchar(20)" location="varchar(50)"> 
+  <school>1</school> 
+</schools>

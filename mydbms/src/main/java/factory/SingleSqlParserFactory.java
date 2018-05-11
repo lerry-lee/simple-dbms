@@ -15,20 +15,62 @@ public class SingleSqlParserFactory {
 	{
 		BaseSingleSqlParser tmp = null;
 
-		if(contains(sql,"(insert into)(.+)(select)(.+)(from)(.+)"))
+		if(contains(sql,"(create database)(.+)")) {
+		System.out.println("2)匹配正则表达式：create database");
+		tmp = new CreateDatabaseSqlParser(sql);
+		}
+		else if(contains(sql,"(delete database)(.+)"))
 		{
-			System.out.println("2)matching regular expressions: insert_select");
+			System.out.println("2)匹配正则表达式：delete database");
+			tmp = new DeleteDatabaseSqlParser(sql);
+
+		}
+		else if(contains(sql,"(show databases)"))
+		{
+			System.out.println("2)匹配正则表达式：show databases");
+			tmp = new ShowDatabaseSqlParser(sql);
+		}
+		else if(contains(sql,"(show tables)"))
+		{
+			System.out.println("2)匹配正则表达式：show tables");
+			tmp = new ShowTablesSqlParser(sql);
+		}
+		else if(contains(sql,"(select table)(.+)(from)(.+)"))
+		{
+			System.out.println("2)匹配正则表达式：select table from");
+			tmp = new SelectTableFromDatabaseSqlParser(sql);
+		}
+		else if(contains(sql,"(use database)(.+)"))
+		{
+			System.out.println("2)匹配正则表达式：use database");
+			tmp = new UseDatabaseSqlParser(sql);
+		}
+		else if(contains(sql,"(create table)(.+)"))
+		{
+			System.out.println("2)匹配正则表达式：create table");
+			tmp = new CreateTableSqlParser(sql);
+
+		}
+		else if(contains(sql,"(insert into)(.+)(values)(.+)"))
+		{
+			System.out.println("2)匹配正则表达式：insert into");
+			tmp = new InsertSqlParser(sql);
+
+		}
+		else if(contains(sql,"(insert into)(.+)(valuess)(.+)()"))
+		{
+			System.out.println("2)匹配正则表达式：insert into where");
 			tmp = new InsertSelectSqlParser(sql);
 
 		}
 		else if(contains(sql,"(select \\* from)(.+)"))
 		{
 			if(contains(sql,"(select \\* from)(.+)(where)(.+)")){
-				System.out.println("2)matching regular expressions: select*where");
+				System.out.println("2)匹配正则表达式：select * from where");
 				tmp=new SelectAllWhereSqlParser(sql);
 			}
 			else {
-				System.out.println("2)matching regular expressions: select*");
+				System.out.println("2)匹配正则表达式：select * from");
 				tmp = new SelectAllSqlParser(sql);
 			}
 
@@ -36,71 +78,34 @@ public class SingleSqlParserFactory {
 		else if(contains(sql,"(select)(.+)(from)(.+)"))
 		{
 
-			System.out.println("2)matching regular expressions: select");
+			System.out.println("2)匹配正则表达式：select from");
 			tmp = new SelectSqlParser(sql);
 
 		}
 
 		else if(contains(sql,"(delete from)(.+)"))
 		{
-			System.out.println("2)matching regular expressions: delete from");
+			System.out.println("2)匹配正则表达式：delete from");
 			tmp = new DeleteSqlParser(sql);
 
 		}
-        else if(contains(sql,"(delete database)(.+)"))
-        {
-            System.out.println("2)matching regular expressions: delete database");
-            tmp = new DeleteDatabaseSqlParser(sql);
 
-        }
         else if(contains(sql,"(delete table)(.+)"))
         {
-            System.out.println("2)matching regular expressions: delete table");
+            System.out.println("2)匹配正则表达式：delete table");
             tmp = new DeleteTableSqlParser(sql);
 
         }
 		else if(contains(sql,"(update)(.+)(set)(.+)"))
 		{
-			System.out.println("2)matching regular expressions: update");
+			System.out.println("2)匹配正则表达式：update set");
 			tmp = new UpdateSqlParser(sql);
 
 		}
 
-		else if(contains(sql,"(insert into)(.+)(values)(.+)"))
-		{
-			System.out.println("2)matching regular expressions: insert into");
-			tmp = new InsertSqlParser(sql);
-
-		}
-		else if(contains(sql,"(create table)(.+)"))
-		{
-			System.out.println("2)matching regular expressions: create table");
-			tmp = new CreateTableSqlParser(sql);
-
-		}
-		else if(contains(sql,"(create database)(.+)"))
-		{
-			System.out.println("2)matching regular expressions: create database");
-			tmp = new CreateDatabaseSqlParser(sql);
-		}
-		else if(contains(sql,"(show databases)"))
-		{
-			System.out.println("2)matching regular expressions: show databases");
-			tmp = new ShowDatabaseSqlParser(sql);
-		}
-		else if(contains(sql,"(show tables)"))
-		{
-			System.out.println("2)matching regular expressions: show tables");
-			tmp = new ShowTablesSqlParser(sql);
-		}
-		else if(contains(sql,"(use database)(.+)"))
-		{
-			System.out.println("2)matching regular expressions: use database");
-			tmp = new UseDatabaseSqlParser(sql);
-		}
 		else
 		{
-			System.out.println("Illegal sql command, please re-enter");
+			System.out.println("SQL语句有误，请重新输入");
 			return null;
 		}
 		//sql=sql.replaceAll("ENDSQL", "");

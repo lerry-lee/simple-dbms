@@ -1,9 +1,6 @@
 package function;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -12,76 +9,71 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 public class UpdateTable {
-    public static void updateTable(String dbName, String tableName, List<List<String>> tmp) throws DocumentException, IOException {
-        //if database illegal
-        if (!IsDatabase.idDatabase()) {
+    public static void updateTable(String dbName, String tbName, List<List<String>> tmp) throws DocumentException, IOException {
+        //数据库是否合法
+        if (IsLegal.isDatabaseEmpty()) {
             return;
         }
-        //if table exist
-        File file = new File("./mydatabase/" + dbName + "/" + tableName + ".xml");
-
-        if (!file.exists()) {
-            System.out.println(tableName + " does not exist");
-            return;
-        }
-        //create document
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(file);
-        //get root
-        Element root = document.getRootElement();
-
-        //List<List<String>> tmp3=new ArrayList<List<String>>();
-        //String[][] tmp4=new String[tmp.get(0).size()][2];
+        //表存在则返回表的最后一个文件名
+        String this_file=IsLegal.isTable(tbName);
+        //find标记是否找到记录
+        Boolean find = false;
+        //处理where内容和set内容
         String[] tmp1 = new String[tmp.get(0).size()];
         String[] tmp2 = new String[1];
         for (int i = 0; i < tmp.get(0).size(); i++) {
-            //tmp1[i] = tmp.get(0).get(i);
-            //tmp3.get(i)= Arrays.asList(tmp.get(0).get(i).split("="));
             tmp1 = tmp.get(0).get(i).split("=");
         }
         tmp2 = tmp.get(1).get(0).split("=");
-        //set node to traverse
-        Element element;
-        Boolean find = false;
 
-        List<Node> nodes = root.selectNodes(tableName);
-        for (Node node : nodes) {
-            Element currentNode = (Element) node;
-            for (Iterator i = currentNode.elementIterator(); i.hasNext(); ) {
-                element = (Element) i.next();
-                if (element.getName().equals(tmp2[0]) && element.getText().equals(tmp2[1])) {
-                    find = true;
-                    break;
-                }
-            }
-            if (find) {
-                for (int j = 0; j < tmp.get(0).size(); j++) {
-                    tmp1 = tmp.get(0).get(j).split("=");
-                    for (Iterator i = currentNode.elementIterator(); i.hasNext(); ) {
-                        element = (Element) i.next();
-                        if (element.getName().equals(tmp1[0])) {
-                            element.setText(tmp1[1]);
-                        }
+        //扫描所有文件,j记录文件下表,num用来遍历所有文件
+        for(int j=Integer.parseInt(this_file);j>=0;j--) {
+            String num=""+j;
+            File file=new File("./mydatabase/"+dbName+"/"+tbName+"/"+tbName+num+".xml");
+            //创建解析器，document对象，获得根节点
+            SAXReader reader = new SAXReader();
+            Document document = reader.read(file);
+            Element root = document.getRootElement();
+
+            List<Node> nodes = root.selectNodes(tbName);
+            for (Node node : nodes) {
+                Element currentNode = (Element) node;
+                List<Attribute> list = currentNode.attributes();
+                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                    Attribute attribute = (Attribute) i.next();
+                    if (attribute.getName().equals(tmp2[0]) && attribute.getText().equals(tmp2[1])) {
+                        find = true;
+                        break;
                     }
                 }
-                break;
+                if (find) {
+                    for (int k = 0; k < tmp.get(0).size(); k++) {
+                        tmp1 = tmp.get(0).get(k).split("=");
+                        for (Iterator i = list.iterator(); i.hasNext(); ) {
+                            Attribute attribute = (Attribute) i.next();
+                            if (attribute.getName().equals(tmp1[0])) {
+                                attribute.setText(tmp1[1]);
+                            }
+                        }
+                    }
+                    //IO
+                    OutputFormat format = OutputFormat.createPrettyPrint();
+                    format.setEncoding("UTF-8");
+                    XMLWriter writer = new XMLWriter(
+                            new OutputStreamWriter(new FileOutputStream("./mydatabase/" + dbName + "/" + tbName + "/"+tbName+num+".xml")), format);
+                    writer.write(document);
+                    writer.close();
+                    System.out.println("更新成功");
+                    return;
+
+                }
             }
         }
+      System.out.println("更新失败，未找到记录");
 
-
-        //write IO
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        format.setEncoding("UTF-8");
-        XMLWriter writer = new XMLWriter(
-                new OutputStreamWriter(new FileOutputStream("./mydatabase/" + dbName + "/" + tableName + ".xml")), format);
-        writer.write(document);
-        writer.close();
-        System.out.println("update successfully");
     }
 }

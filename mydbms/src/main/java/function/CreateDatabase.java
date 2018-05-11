@@ -3,16 +3,17 @@ package function;
 import java.io.File;
 
 public class CreateDatabase {
+    //create database 数据库名称
     public static void createDB(String databaseName){
-        //create new directory
+        //创建数据库目录
         File db=new File("./mydatabase/"+databaseName+"");
-        //determine whether directory exists
+        //判断数据库是否存在
         if(!db.exists()){
             db.mkdir();
-            System.out.println("create database "+databaseName+" successfully.");
+            System.out.println("数据库"+databaseName+"创建成功");
         }
         else{
-            System.out.println("database "+databaseName+" has already exist.");
+            System.out.println("数据库"+databaseName+"已经存在，请创建新数据库（SQL语句：create database 数据库名称）;");
         }
     }
 
