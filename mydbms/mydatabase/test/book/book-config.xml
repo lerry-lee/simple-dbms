@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<books id="int" name="varchar(20)" author="varchar(20)"> 
+  <book>0</book>  
+  <insertables/>  
+  <index>1</index>  
+  <index_name>id</index_name> 
+</books>

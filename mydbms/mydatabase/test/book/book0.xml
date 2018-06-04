@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<books> 
+  <book id="001" name="百年孤独" author="马尔克斯"/>  
+  <book id="002" name="三国演义" author="罗贯中"/>  
+  <book id="003" name="安卓开发" author="李刚"/>  
+  <book id="004" name="什么是数学" author="数学家"/>
+</books>

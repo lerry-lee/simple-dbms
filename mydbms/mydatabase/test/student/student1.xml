@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<students> 
+  <student id="2015011" name="孟菊开" sex="男" age="19"/> 
+</students>

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <helps>
-    <help>登陆：</help>
-    <help>用户名:root 密码:root</help>
-    <help></help>
+    <help>----------------------------------------------------------------------------------------</help>
     <help>SQL语句(所有语句以;结束)：</help>
+    <help></help>
+    <help>创建新用户：create user</help>
     <help>创建数据库：create database 数据库名</help>
     <help>使用数据库：use database 数据库名</help>
-    <help>删除数据库：delete database 数据库名</help>
+    <help>删除数据库：drop database 数据库名</help>
     <help>列出所有数据库：show databases</help>
     <help>列出数据库中的所有表名：show tables</help>
     <help>从数据库中查找表：select 表名 from 数据库名</help>
     <help></help>
-    <help>创建表：create table 表名 (属性名1 数据类型，数据名2 数据类型,......)</help>
-    <help>删除表：delete table 表名</help>
-    <help>向表中插入数据：insert into 表名(属性名1，属性名2，...) values(值1，值2，...)</help>
+    <help>创建表：create table 表名 (列名称1 数据类型，列名称2 数据类型,......)</help>
+    <help>删除表：drop table 表名</help>
+    <help>向表中插入数据：insert into 表名(列名称1，列名称2，...) values(列值1，列值2，...)</help>
     <help>从表中删除数据：delete from 表名 where 列名称=列值</help>
     <help>从表中查询数据：</help>
     <help>               select * from 表名</help>
     <help>               select * from 表名 where 列名称=列值</help>
-    <help>               select 列名称1，列名称2,... from 表名</help>
-    <help>               select 列名称1，列名称2，...from 表名 where 列名称=列值</help>
-    <help>更新表中数据：update 表名 set 列名称1=列值1，列名称2=列值2 where 列名称=列值</help>
+    <help>               select 列名称1，列名称2，... from 表名</help>
+    <help>               select 列名称1，列名称2，... from 表名 where 列名称=列值</help>
+    <help>更新表中数据：update 表名 set 列名称1=列值1，列名称2=列值2，... where 列名称=列值</help>
+    <help></help>
+    <help>创建索引：create index on 表名（主键列名称）</help>
+    <help>删除索引：drop index on 表名</help>
     <help></help>
     <help>退出：quit</help>
+    <help>----------------------------------------------------------------------------------------</help>
 </helps>

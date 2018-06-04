@@ -2,4 +2,13 @@
 
 <schools>
   <school id="02" name="school2" location="location2"/>
+  <school id="12" name="school12" location="location12"/>
+  <school id="13" name="school13" location="location13"/>
+  <school id="14" name="school14" location="location14"/>
+  <school id="15" name="school15" location="location16"/>
+  <school id="16" name="school16" location="location16"/>
+  <school id="17" name="school17" location="location17"/>
+  <school id="18" name="school18" location="location18"/>
+  <school id="19" name="school19" location="location19"/>
+  <school id="20" name="school20" location="location20"/>
 </schools>

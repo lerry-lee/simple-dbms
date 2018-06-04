@@ -5,8 +5,8 @@ import java.io.File;
 public class ShowTables {
     //show tables
     public static void showTable(String dbname){
-        //数据库是否合法
-        if(!IsLegal.isDatabaseEmpty()){
+        //数据库是否为空
+        if(IsLegal.isDatabaseEmpty()){
             return;
         }
         File dir=new File("./mydatabase/"+dbname+"");

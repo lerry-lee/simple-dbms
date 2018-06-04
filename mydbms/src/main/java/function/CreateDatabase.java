@@ -13,7 +13,7 @@ public class CreateDatabase {
             System.out.println("数据库"+databaseName+"创建成功");
         }
         else{
-            System.out.println("数据库"+databaseName+"已经存在，请创建新数据库（SQL语句：create database 数据库名称）;");
+            System.out.println("数据库"+databaseName+"已经存在");
         }
     }
 

@@ -19,10 +19,10 @@ public class SingleSqlParserFactory {
 		System.out.println("2)匹配正则表达式：create database");
 		tmp = new CreateDatabaseSqlParser(sql);
 		}
-		else if(contains(sql,"(delete database)(.+)"))
+		else if(contains(sql,"(drop database)(.+)"))
 		{
-			System.out.println("2)匹配正则表达式：delete database");
-			tmp = new DeleteDatabaseSqlParser(sql);
+			System.out.println("2)匹配正则表达式：drop database");
+			tmp = new DropDatabaseSqlParser(sql);
 
 		}
 		else if(contains(sql,"(show databases)"))
@@ -34,11 +34,6 @@ public class SingleSqlParserFactory {
 		{
 			System.out.println("2)匹配正则表达式：show tables");
 			tmp = new ShowTablesSqlParser(sql);
-		}
-		else if(contains(sql,"(select table)(.+)(from)(.+)"))
-		{
-			System.out.println("2)匹配正则表达式：select table from");
-			tmp = new SelectTableFromDatabaseSqlParser(sql);
 		}
 		else if(contains(sql,"(use database)(.+)"))
 		{
@@ -90,10 +85,10 @@ public class SingleSqlParserFactory {
 
 		}
 
-        else if(contains(sql,"(delete table)(.+)"))
+        else if(contains(sql,"(drop table)(.+)"))
         {
-            System.out.println("2)匹配正则表达式：delete table");
-            tmp = new DeleteTableSqlParser(sql);
+            System.out.println("2)匹配正则表达式：drop table");
+            tmp = new DropTableSqlParser(sql);
 
         }
 		else if(contains(sql,"(update)(.+)(set)(.+)"))
@@ -102,15 +97,24 @@ public class SingleSqlParserFactory {
 			tmp = new UpdateSqlParser(sql);
 
 		}
+		else if(contains(sql,"(create index on)(.+)")){
+			System.out.println("2)匹配正则表达式：create index on");
+			tmp=new CreateIndexSqlParser(sql);
+		}
+		else if(contains(sql,"(drop index on)(.+)")){
+			System.out.println("2)匹配正则表达式：drop index on");
+			tmp=new DropIndexSqlParser(sql);
+		}
+		else if(contains(sql,"(create user)")){
+			System.out.println("2)匹配正则表达式：create user");
+			tmp=new CreateUserSqlParser(sql);
+		}
 
 		else
 		{
 			System.out.println("SQL语句有误，请重新输入");
 			return null;
 		}
-		//sql=sql.replaceAll("ENDSQL", "");
-		//	throw new Exception(sql.replaceAll("ENDOFSQL", ""));
-		//return null;
 
 		return tmp.splitSql2Segment();
 	}

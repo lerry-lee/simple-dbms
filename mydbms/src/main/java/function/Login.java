@@ -7,6 +7,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,13 +50,12 @@ public class Login {
 //            }
 //        }
 
+        //加载索引文件到内存
+        if(IsLegal.need_loadIndex()) {
+            CreateIndex.loadIndex();
+        }
 
-//        BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(System.in));
-//        String answer=bufferedReader.readLine();
-//        if(answer.equals("help")){
-//            read_help();
-//        }
-        UseDatabase.dbName=null;
+        UseDatabase.dbName="test";
         while(true)
         {
             System.out.println("请输入SQL语句：（您可以输入help以查询SQL语句帮助）");
@@ -74,6 +74,7 @@ public class Login {
             //sql parse
             if(sql.equals("help")){
                 read_help();
+                continue;
             }
 
             while(sql.lastIndexOf(";")!=sql.length()-1){
@@ -107,7 +108,7 @@ public class Login {
                     parameter_list = SingleSqlParserFactory.generateParser(sql);
                 }
                 catch (Exception e){
-                    //e.printStackTrace();
+                    e.printStackTrace();
 
                 }
                 //根据SQL的body部分，调用相应的功能模块
@@ -115,7 +116,7 @@ public class Login {
                     PassingParametersFactory.dealParameters(parameter_list);
                 }
                 catch(Exception e){
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
 
