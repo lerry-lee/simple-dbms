@@ -1,5 +1,8 @@
 package sqlparser;
 
+/**
+ * 没用到
+ */
 public class DeleteTableSqlParser extends BaseSingleSqlParser{
     public DeleteTableSqlParser(String originalSql) {
         super(originalSql);

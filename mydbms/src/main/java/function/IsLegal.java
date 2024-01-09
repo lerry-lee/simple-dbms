@@ -9,6 +9,7 @@ import java.io.File;
 
 public class IsLegal {
     //判断数据库是否为空
+
     public static boolean isDatabaseEmpty(){
         //获得数据库名称
         String dbName=UseDatabase.dbName;
@@ -35,6 +36,7 @@ public class IsLegal {
     }
     //判断表是否存在,存在则返回该表的配置文件
     public  static File isTable(String dbName,String tbName){
+
         File file=new File("./mydatabase/"+dbName+"/"+tbName+"");
         if(!file.exists()){
             System.out.println(tbName+"表不存在");
@@ -42,6 +44,17 @@ public class IsLegal {
         }
         else{
             file=new File("./mydatabase/"+dbName+"/"+tbName+"/"+tbName+"-config.xml");
+            return file;
+        }
+    }
+    public static File hasDir(String dbName,String tbName)
+    {
+        File file=new File("./mydatabase/"+dbName+"/"+tbName+"");
+        if(!file.exists()){
+            System.out.println("该表不存在");
+            return null;
+        }
+        else{
             return file;
         }
     }
@@ -74,7 +87,7 @@ public class IsLegal {
     //判断是不是通过主键查询
     public static boolean isIndex(File file,String key) throws DocumentException {
         SAXReader saxReader=new SAXReader();
-        Document document=saxReader.read(file);
+        Document document=saxReader.read(file); // 使用SAXReader读取指定文件，并将解析结果赋值给Document对象
         Element element= (Element) document.getRootElement().selectSingleNode("index_name");
         if(element.getText().equals(key)){
             return true;

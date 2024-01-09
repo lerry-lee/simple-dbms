@@ -1,5 +1,8 @@
 package sqlparser;
 
+/**
+ * 不带where的查询语句解析
+ */
 public class SelectAllSqlParser extends BaseSingleSqlParser{
     public SelectAllSqlParser(String originalSql)
     {

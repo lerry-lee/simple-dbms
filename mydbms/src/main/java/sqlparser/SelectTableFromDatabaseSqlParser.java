@@ -1,5 +1,5 @@
 package sqlparser;
-
+//没用
 public class SelectTableFromDatabaseSqlParser extends BaseSingleSqlParser{
 
     public SelectTableFromDatabaseSqlParser(String originalSql)

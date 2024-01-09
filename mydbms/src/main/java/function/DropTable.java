@@ -10,7 +10,8 @@ public class DropTable {
             return;
         }
         //表存在则返回一个对象
-        File file = IsLegal.isTable(dbName, tbName);
+        File file = IsLegal.hasDir(dbName, tbName);
+        System.out.println(file.toString());
         //删除整张表
         File[] files = file.listFiles();
         for (int i = 0; i < files.length; i++) {

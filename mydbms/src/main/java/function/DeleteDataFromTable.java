@@ -16,6 +16,10 @@ public class DeleteDataFromTable {
         if (IsLegal.isDatabaseEmpty()) {
             return;
         }
+        //输出tmp列表
+        for (int i = 0; i < tmp.size(); i++) {
+            System.out.println(tmp.get(i));
+        }
         //表存在则返回物理层最后一张子表的下标，并得到配置文件
         File config_file=IsLegal.isTable(dbName,tbName);
         String write_file_last_num = IsLegal.lastFileName(dbName, tbName);
@@ -53,7 +57,7 @@ public class DeleteDataFromTable {
             System.out.println("没有找到要删除的记录");
         }
     }
-
+    //主键删除用delete方法
     public static boolean delete(File file,String dbName,String tbName,String[] key_value,String last_num) throws DocumentException, IOException {
         SAXReader reader = new SAXReader();
         Document document = reader.read(file);

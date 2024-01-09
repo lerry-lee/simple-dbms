@@ -1,5 +1,8 @@
 package sqlparser;
 
+/**
+ * 创建索引的sql解析器
+ */
 public class CreateIndexSqlParser extends BaseSingleSqlParser {
     public CreateIndexSqlParser(String originalSql) {
         super(originalSql);

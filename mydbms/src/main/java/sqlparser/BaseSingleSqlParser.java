@@ -32,12 +32,11 @@ public abstract class BaseSingleSqlParser {
 	protected abstract void initializeSegments();
 
 
-	/** *//**
+	/**
 	 　* 将originalSql劈分成一个个片段
 	 　*
-
-	 * @return */
-	public List<List<String>> splitSql2Segment()
+	 */
+	public List<List<String>> splitSql2Segment()//分割成两个模块
 	{
 		List<List<String>> list=new ArrayList<List<String>>();
 
@@ -50,7 +49,7 @@ public abstract class BaseSingleSqlParser {
 		return list;
 	}
 
-	/** *//**
+	/**
 	 　* 得到解析完毕的Sql语句
 	 　* @return
 	 　*/

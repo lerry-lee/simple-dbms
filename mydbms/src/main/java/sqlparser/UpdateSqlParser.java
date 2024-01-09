@@ -1,6 +1,11 @@
 package sqlparser;
 
-//正确
+import com.sun.org.glassfish.gmbal.Description;
+
+/**
+ * 单句更新语句sql解析
+ */
+ @Description("更新语句解析")
 public class UpdateSqlParser extends BaseSingleSqlParser{
 
 	public UpdateSqlParser(String originalSql) {

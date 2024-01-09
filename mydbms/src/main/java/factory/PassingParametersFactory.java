@@ -10,9 +10,9 @@ import java.util.*;
  */
 public class PassingParametersFactory {
 
-    public static void dealParameters(List<List<String>> list) throws IOException, DocumentException {
+    public static void dealParameters(List<List<String>> list) throws IOException, DocumentException {//将语句预处理后，生成的结果
         List<String> ls = new ArrayList<String>();
-        ls = list.get(0);
+        ls = list.get(0);//一开始的肯定是处理语句
 //--------------------------------------------------------------------------------------------------------------------------------------
 //        for (int i = 0; i < list.size(); i++) {
 //            System.out.println("list.get(" + i + "): " + list.get(i));
@@ -22,12 +22,12 @@ public class PassingParametersFactory {
         if (sql_key.equals("create table")) {
             System.out.println("3)调用方法：创建表");
 
-            List<String> tmp = new ArrayList<String>();//传递参数
-            List<String> tmp1 = list.get(1);
-            for (int i = 1; i < tmp1.size(); i++) {
-                tmp.add(tmp1.get(i));
+            List<String> bodyList = new ArrayList<String>();//传递参数
+            List<String> body = list.get(1);
+            for (int i = 1; i < body.size(); i++) {
+                bodyList.add(body.get(i));
             }
-            CreateTable.createTb(UseDatabase.dbName, ls.get(1), tmp);
+            CreateTable.createTb(UseDatabase.dbName, ls.get(1), bodyList);
 
         }
         else if (sql_key.equals("show databases")) {
@@ -46,6 +46,7 @@ public class PassingParametersFactory {
                 UseDatabase.dbName = null;
                 return;
             }
+
         }
         else if (sql_key.equals("create database")) {
             System.out.println("3)调用方法：创建数据库");
@@ -56,7 +57,7 @@ public class PassingParametersFactory {
 
             List<String> tmp2 = list.get(2);
             List<String> tmp1 = list.get(1);
-
+            //
             InsertDataIntoTable.insertIntoTable(UseDatabase.dbName, ls.get(1), tmp1, tmp2);
         }
         else if (sql_key.equals("select * from")) {

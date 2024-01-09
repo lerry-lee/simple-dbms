@@ -1,5 +1,5 @@
 package sqlparser;
-
+//没用到
 public class InsertAllSqlParser extends BaseSingleSqlParser {
     public InsertAllSqlParser(String originalSql) {
         super(originalSql);

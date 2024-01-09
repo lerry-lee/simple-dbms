@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/** *//**
+/**
  * Sql语句片段
  * @since 2018-4-4
  */
@@ -30,11 +30,12 @@ public class SqlSegment {
 
 	 //分割后的Body小片段
 	private List<String> bodyPieces;
-	/** *//**
+	/**
 	 　* 构造函数
 	 　* @param segmentRegExp 表示这个Sql片段的正则表达式
 	 　* @param bodySplitPattern 用于分割body的正则表达式
 	 　*/
+
 	public SqlSegment(String segmentRegExp,String bodySplitPattern)
 	{
 		start="";

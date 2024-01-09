@@ -1,5 +1,8 @@
 package sqlparser;
 
+/**
+ * 创建用户sql语句解释器
+ */
 public class CreateUserSqlParser extends BaseSingleSqlParser{
 
     public CreateUserSqlParser(String originalSql) {

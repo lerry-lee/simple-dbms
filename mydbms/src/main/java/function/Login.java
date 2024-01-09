@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Login {
-    public static void main(String[]args) throws IOException, DocumentException {
+    public static void main(String[] args) throws IOException, DocumentException {
 
 
 //        System.out.println("欢迎进入My-Simple-Dbms,请先登录");
@@ -51,13 +51,12 @@ public class Login {
 //        }
 
         //加载索引文件到内存
-        if(IsLegal.need_loadIndex()) {
+        if (IsLegal.need_loadIndex()) {
             CreateIndex.loadIndex();
         }
 
-        UseDatabase.dbName="test";
-        while(true)
-        {
+        UseDatabase.dbName = "test";
+        while (true) {
             System.out.println("请输入SQL语句：（您可以输入help以查询SQL语句帮助）");
             @SuppressWarnings("resource")
             Scanner input = new Scanner(System.in);
@@ -72,64 +71,53 @@ public class Login {
 //             */
 //            //处理分行输入的问题，就是读;号才停止;
             //sql parse
-            if(sql.equals("help")){
+            if (sql.equals("help")) {
                 read_help();
                 continue;
             }
 
-            while(sql.lastIndexOf(";")!=sql.length()-1){
-                sql = sql+" "+input.nextLine();
+            while (sql.lastIndexOf(";") != sql.length() - 1) {
+                sql = sql + " " + input.nextLine();
             }
 
-            sql = sql.trim();
-            sql=sql.toLowerCase();
-            sql=sql.replaceAll("\\s+", " ");
+            sql = sql.trim(); // 去除字符串两侧的空白字符
+            sql = sql.toLowerCase();//全部转为小写
+            sql = sql.replaceAll("\\s+", " ");// 将sql中的连续空白字符替换为一个空格
+            sql = sql.substring(0, sql.lastIndexOf(";"));// 去除SQL语句末尾的分号
+            sql = "" + sql + " ENDOFSQL";
+            System.out.println("1)SQL预处理结果: " + sql);
 
-            sql = sql.substring(0, sql.lastIndexOf(";"));
-            sql=""+sql+" ENDOFSQL";
-            System.out.println("1)SQL预处理结果: "+sql);
-//
-//            /*
-//             * 结束输入判断
-//             */
-////			Pattern pattern=Pattern.compile("(quit)");
-////			Matcher matcher=pattern.matcher(sql);
-////			System.out.println(matcher.find());
-            List<List<String>> parameter_list=new ArrayList<List<String>>();
+            List<List<String>> parameter_list = new ArrayList<List<String>>();//缓存sql body信息的list
 
-            if(sql.equals("quit ENDOFSQL"))
-            {
+            if (sql.equals("quit ENDOFSQL")) {
                 return;
-            }
-            else
-            {
+            } else {
                 //将预处理后的SQL语句匹配SQL正则表达式，返回含有SQL的body信息的List
-                try{
+                try {
                     parameter_list = SingleSqlParserFactory.generateParser(sql);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();//异常处理，不用管
 
                 }
                 //根据SQL的body部分，调用相应的功能模块
-                try{
+                try {
                     PassingParametersFactory.dealParameters(parameter_list);
-                }
-                catch(Exception e){
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();//异常处理，不用管
                 }
             }
 
 
         }
     }
-    public static void read_help() throws DocumentException {
-        File file=new File("./help.xml");
-        SAXReader saxReader=new SAXReader();
-        Document document=saxReader.read(file);
-        List<Node> nodes=document.getRootElement().selectNodes("help");
-        for(Node node:nodes){
-            Element element=(Element)node;
+
+    public static void read_help() throws DocumentException {//读取帮助文件
+        File file = new File("./help.xml");
+        SAXReader saxReader = new SAXReader();
+        Document document = saxReader.read(file);
+        List<Node> nodes = document.getRootElement().selectNodes("help");
+        for (Node node : nodes) {
+            Element element = (Element) node;
             System.out.println(element.getText());
         }
     }

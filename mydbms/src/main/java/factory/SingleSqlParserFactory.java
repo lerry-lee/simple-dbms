@@ -15,7 +15,7 @@ public class SingleSqlParserFactory {
 	{
 		BaseSingleSqlParser tmp = null;
 
-		if(contains(sql,"(create database)(.+)")) {
+		if(contains(sql,"(create database)([^\\n]+)")) {// 判断字符串sql是否包含"(create database)"以及之后的任意字符
 		System.out.println("2)匹配正则表达式：create database");
 		tmp = new CreateDatabaseSqlParser(sql);
 		}
@@ -115,10 +115,10 @@ public class SingleSqlParserFactory {
 			System.out.println("SQL语句有误，请重新输入");
 			return null;
 		}
+		return tmp.splitSql2Segment();//注意此处是个方法，返回的是一个List<List<String>>
 
-		return tmp.splitSql2Segment();
 	}
-	/** *//**
+	/** //**
 	 　* 看word是否在lineText中存在，支持正则表达式
 	 　* @param sql:要解析的sql语句
 	 　* @param regExp:正则表达式
