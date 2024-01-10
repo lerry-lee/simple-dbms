@@ -101,13 +101,13 @@ public class PassingParametersFactory {
         else if (sql_key.equals("delete from")) {
             System.out.println("3)调用方法：删除指定记录");
             //取出每个list中的start部分，只传递后面的参数部分；
-            List<String> tmp1 = list.get(1);
-            List<String> tmp2 = new ArrayList<String>();
-            for (int i = 1; i < tmp1.size(); i++) {
-                String r = tmp1.get(i);
-                tmp2.add(r);
+            List<String> conditions = list.get(1);
+            List<String> conditionList = new ArrayList<String>();
+            for (int i = 1; i < conditions.size(); i++) {
+                String r = conditions.get(i);
+                conditionList.add(r);
             }
-            DeleteDataFromTable.deleteFromTable(UseDatabase.dbName, ls.get(1), tmp2);
+            DeleteDataFromTable.deleteFromTable(UseDatabase.dbName, ls.get(1), conditionList);
         }
         else if (sql_key.equals("create index on")) {
             System.out.println("3)调用方法：创建索引");

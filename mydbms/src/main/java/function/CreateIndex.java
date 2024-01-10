@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class CreateIndex {
-    static public Map<String,BPlusTree> tmpMap=new HashMap<String, BPlusTree>();
+    public static Map<String,BPlusTree> tmpMap=new HashMap<String, BPlusTree>();
     //存储所有索引B+树的list，每次进入系统都会把索引文件以B+树形式加载到内存
-    static public List<Map<String,BPlusTree>> myTree_list=new ArrayList<Map<String, BPlusTree>>();
+     public static List<Map<String,BPlusTree>> myTree_list=new ArrayList<Map<String, BPlusTree>>();
 
     public static void createIndex(String dbName, String tbName, String index) throws DocumentException, IOException {
         //数据库是否为空
@@ -48,7 +48,7 @@ public class CreateIndex {
 
                 Element element = (Element) node;
                 List<Attribute> list=element.attributes();
-                for (Iterator i = list.iterator(); i.hasNext(); ) {
+                for (Iterator i = list.iterator(); i.hasNext(); ) {//遍历特征
                    Attribute attribute=(Attribute)i.next();
                     if (attribute.getName().equals(index)) {
                         //暂存每一个id对应filename

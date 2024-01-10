@@ -30,7 +30,7 @@ public class DeleteDataFromTable {
         Boolean find = false;
         //非主键查询删除
         if(!IsLegal.isIndex(config_file,key)) {
-            for (int j = Integer.parseInt(write_file_last_num); j >= 0; j--) {
+            for (int j = Integer.parseInt(write_file_last_num); j >= 0; j--) {//字符串转整数
                 //设置变量traverse_file用来遍历表的所有文件
                 String last_num = "" + j;
                 //创建写入对象，创建sax解析器，document对象，获得root节点

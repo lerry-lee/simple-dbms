@@ -2,5 +2,5 @@
 
 <tables> 
   <student k2015011="student1" k2015001="student0" k2015002="student0" k2015003="student0" k2015006="student0" k2015007="student0" k2015008="student0" k2015009="student0" k2015010="student0" k2015013="student0" k2015015="student1" k2015012="student1"/>  
-  <book k001="book0" k002="book0" k003="book0" k004="book0"/>
+  <book k001="book0" k002="book0" k003="book0" k004="book0"/> 
 </tables>
